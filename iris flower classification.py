@@ -33,11 +33,11 @@ def loadDataset(filename, split, trainingSet=[] , testSet=[]):
  
  
 # simple euclidean distance between two points 
-def euclideanDistance(instance1, instance2, length):
-	distance = 0
+def euclideanDistance(data1, data2, length):
 	
+	distance = 0
 	for x in range(length):
-		distance += pow((instance1[x] - instance2[x]), 2)
+		distance += pow((data1[x] - data2[x]), 2)
 	
 	return math.sqrt(distance)
  
@@ -75,18 +75,21 @@ def getResponse(neighbors):
  
 def getAccuracy(testSet, predictions):
 	correct = 0
+	
 	for x in range(len(testSet)):
 		if testSet[x][-1] == predictions[x]:
 			correct += 1
+	
 	return (correct/float(len(testSet))) * 100.0
 	
 def main():
 	
 	trainingSet=[]
 	testSet=[]
-	split = 0.67
+	#split parameter for trainingset and testset
+	split = 0.66 
 	
-	loadDataset('iris.data', split, trainingSet, testSet)
+	loadDataset('iris.csv', split, trainingSet, testSet)
 
 	print 'Train set: ' + repr(len(trainingSet))
 	print 'Test set: ' + repr(len(testSet))
@@ -98,12 +101,12 @@ def main():
 		
 		neighbors = getNeighbors(trainingSet, testSet[x], k)
 		result = getResponse(neighbors)
-		
 		predictions.append(result)
 		
 		print('> predicted=' + repr(result) + ', actual=' + repr(testSet[x][-1]))
 	
 	accuracy = getAccuracy(testSet, predictions)
+	
 	print('Accuracy: ' + repr(accuracy) + '%')
 	
 main()
